@@ -1,21 +1,35 @@
-function UserProfile(props) {
+const UserProfile = () => {
+  const containerStyle = {
+    padding: "20px",
+    backgroundColor: "#f2f2f2",
+    borderRadius: "8px",
+    marginTop: "20px",
+    textAlign: "center"
+  };
+
+  const imageStyle = {
+    width: "120px",
+    height: "120px",
+    borderRadius: "50%",
+    marginBottom: "10px"
+  };
+
+  const nameStyle = {
+    fontSize: "22px",
+    fontWeight: "bold",
+    color: "#333"
+  };
+
   return (
-    <div
-      style={{
-        border: '1px solid gray',
-        padding: '15px',
-        margin: '20px',
-        borderRadius: '8px',
-        backgroundColor: '#f9f9f9'
-      }}
-    >
-      <h2 style={{ color: 'blue' }}>{props.name}</h2>
-      <p>
-        Age: <span style={{ fontWeight: 'bold' }}>{props.age}</span>
-      </p>
-      <p>Bio: {props.bio}</p>
+    <div style={containerStyle}>
+      <img
+        style={imageStyle}
+        src="https://via.placeholder.com/120"
+        alt="User avatar"
+      />
+      <h2 style={nameStyle}>John Doe</h2>
     </div>
   );
-}
+};
 
 export default UserProfile;

@@ -1,17 +1,14 @@
-function Footer() {
-  return (
-    <footer
-      style={{
-        backgroundColor: 'black',
-        color: 'white',
-        padding: '15px',
-        textAlign: 'center',
-        marginTop: '30px'
-      }}
-    >
-      <p>© 2025 My React App</p>
-    </footer>
-  );
-}
+const Footer = () => {
+  const footerStyle = {
+    padding: "15px",
+    marginTop: "30px",
+    backgroundColor: "#222",
+    color: "white",
+    textAlign: "center",
+    borderRadius: "8px"
+  };
+
+  return <footer style={footerStyle}>© 2025 My Website</footer>;
+};
 
 export default Footer;

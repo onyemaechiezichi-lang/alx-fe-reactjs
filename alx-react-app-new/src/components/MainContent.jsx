@@ -1,24 +1,21 @@
-function MainContent() {
-  return (
-    <main
-      style={{
-        padding: '20px',
-        backgroundColor: '#eef2ff',
-        minHeight: '200px'
-      }}
-    >
-      <p style={{ fontSize: '18px' }}>
-        Here are some cities I would love to visit someday:
-      </p>
+const MainContent = () => {
+  const contentStyle = {
+    padding: "20px",
+    backgroundColor: "#e8f0ff",
+    borderRadius: "8px",
+    marginTop: "20px"
+  };
 
-      <ul style={{ marginLeft: '20px' }}>
-        <li>Lagos</li>
-        <li>Nairobi</li>
-        <li>Tokyo</li>
-        <li>London</li>
-      </ul>
-    </main>
+  const textStyle = {
+    fontSize: "18px",
+    color: "#444"
+  };
+
+  return (
+    <div style={contentStyle}>
+      <p style={textStyle}>Welcome to the main content area!</p>
+    </div>
   );
-}
+};
 
 export default MainContent;
