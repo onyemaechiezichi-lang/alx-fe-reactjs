@@ -1,16 +1,19 @@
+// src/components/MainContent.jsx
+import React from "react";
+
 function MainContent() {
   return (
     <main
       style={{
-        backgroundColor: '#f2f2f2',
-        padding: '20px',
-        margin: '10px',
-        textAlign: 'center'
+        backgroundColor: "#f0f8ff",
+        padding: "20px",
+        textAlign: "center",
+        border: "2px solid blue",
+        borderRadius: "10px",
       }}
     >
-      <h2 style={{ color: 'darkslategray' }}>Welcome to My Page</h2>
-      <p>
-        This section contains information about my favorite cities and why I love them.
+      <p style={{ fontSize: "18px", color: "black" }}>
+        I love to visit New York, Paris, and Tokyo.
       </p>
     </main>
   );
