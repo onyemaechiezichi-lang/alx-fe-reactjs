@@ -5,12 +5,12 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <>
+    <div>
       <Header />
-      <UserProfile name="Goodness Onyemaechi" age={22} bio="Frontend Developer" />
+      <UserProfile name="Jane Doe" age={28} bio="A traveler who loves exploring cities." />
       <MainContent />
       <Footer />
-    </>
+    </div>
   );
 }
 

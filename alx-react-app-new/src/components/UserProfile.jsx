@@ -1,33 +1,23 @@
 const UserProfile = () => {
-  const containerStyle = {
-    padding: "20px",
-    backgroundColor: "#f2f2f2",
-    borderRadius: "8px",
-    marginTop: "20px",
-    textAlign: "center"
-  };
-
-  const imageStyle = {
-    width: "120px",
-    height: "120px",
-    borderRadius: "50%",
-    marginBottom: "10px"
-  };
-
-  const nameStyle = {
-    fontSize: "22px",
-    fontWeight: "bold",
-    color: "#333"
-  };
-
   return (
-    <div style={containerStyle}>
+    <div
+      style={{
+        border: "2px solid blue",
+        padding: "20px",
+        borderRadius: "10px",
+        textAlign: "center",
+        marginTop: "20px"
+      }}
+    >
       <img
-        style={imageStyle}
         src="https://via.placeholder.com/120"
-        alt="User avatar"
+        alt="User Avatar"
+        style={{ borderRadius: "50%", marginBottom: "10px" }}
       />
-      <h2 style={nameStyle}>John Doe</h2>
+      <h2 style={{ color: "blue" }}>John Doe</h2>
+      <span style={{ color: "gray", fontStyle: "italic" }}>
+        React Developer
+      </span>
     </div>
   );
 };

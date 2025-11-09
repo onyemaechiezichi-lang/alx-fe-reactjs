@@ -1,21 +1,19 @@
-const MainContent = () => {
-  const contentStyle = {
-    padding: "20px",
-    backgroundColor: "#e8f0ff",
-    borderRadius: "8px",
-    marginTop: "20px"
-  };
-
-  const textStyle = {
-    fontSize: "18px",
-    color: "#444"
-  };
-
+function MainContent() {
   return (
-    <div style={contentStyle}>
-      <p style={textStyle}>Welcome to the main content area!</p>
-    </div>
+    <main
+      style={{
+        backgroundColor: '#f2f2f2',
+        padding: '20px',
+        margin: '10px',
+        textAlign: 'center'
+      }}
+    >
+      <h2 style={{ color: 'darkslategray' }}>Welcome to My Page</h2>
+      <p>
+        This section contains information about my favorite cities and why I love them.
+      </p>
+    </main>
   );
-};
+}
 
 export default MainContent;
