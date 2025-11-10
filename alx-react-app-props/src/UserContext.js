@@ -1,3 +1,7 @@
-import { createContext } from "react";
+import React from 'react';
 
-export const UserContext = createContext();
+// Initialize a Context and export it.
+// The default value is set to null.
+const UserContext = React.createContext(null);
+
+export default UserContext;

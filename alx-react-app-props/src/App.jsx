@@ -1,22 +1,22 @@
-import React from "react";
-import { UserContext } from "./UserContext";
-import UserProfile from "./components/UserProfile";
+import React from 'react';
+import ProfilePage from './ProfilePage';
+import UserContext from './UserContext';
 
 function App() {
-  const user = {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    location: "New York",
-  };
+  const userData = { name: "Jane Doe (Context API)", email: "jane.doe@example.com" };
 
+  // Wrap the ProfilePage component inside UserContext.Provider.
+  // Pass userData as the value to the provider.
   return (
-    <UserContext.Provider value={user}>
-      <div>
-        <h1>Welcome to the User Profile App</h1>
-        <UserProfile />
+    <UserContext.Provider value={userData}>
+      <div className="p-8 bg-gray-100 min-h-screen flex justify-center items-start">
+        <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-lg">
+          <h1 className="text-2xl font-bold mb-4 text-center">Application Root (App.jsx)</h1>
+          {/* Removed userData prop passed to ProfilePage */}
+          <ProfilePage />
+        </div>
       </div>
     </UserContext.Provider>
   );
 }
-
 export default App;
