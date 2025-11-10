@@ -4,8 +4,8 @@ import UserProfile from "./components/UserProfile";
 
 function App() {
   const user = {
-    name: "John Doe",
-    email: "john@example.com",
+    name: "Jane Doe",
+    email: "jane.doe@example.com",
     location: "New York",
   };
 
