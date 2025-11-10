@@ -1,24 +1,22 @@
-// src/components/UserProfile.jsx
-import React, { useContext } from "react";
-import { UserContext } from "../UserContext";
+import React from "react";
+import { UserContext } from "./UserContext";
+import UserProfile from "./components/UserProfile";
 
-function UserProfile() {
-  const user = useContext(UserContext);
+function App() {
+  const user = {
+    name: "John Doe",
+    email: "john@example.com",
+    location: "New York",
+  };
 
   return (
-    <div style={{ border: "1px solid blue", padding: "10px" }}>
-      <h2>User Profile</h2>
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
-      <p>
-        <strong>Location:</strong> {user.location}
-      </p>
-    </div>
+    <UserContext.Provider value={user}>
+      <div>
+        <h1>Welcome to the User Profile App</h1>
+        <UserProfile />
+      </div>
+    </UserContext.Provider>
   );
 }
 
-export default UserProfile;
+export default App;
