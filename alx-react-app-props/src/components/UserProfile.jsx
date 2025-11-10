@@ -5,11 +5,11 @@ function UserProfile() {
   const user = useContext(UserContext);
 
   return (
-    <div>
+    <div style={{ border: "1px solid blue", padding: "12px", borderRadius: "6px" }}>
       <h2>User Profile</h2>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Location: {user.location}</p>
+      <p><strong>Name:</strong> {user && user.name}</p>
+      <p><strong>Email:</strong> {user && user.email}</p>
+      <p><strong>Location:</strong> {user && user.location}</p>
     </div>
   );
 }
