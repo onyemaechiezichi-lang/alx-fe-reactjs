@@ -8,6 +8,7 @@ function Navbar() {
     justifyContent: 'center',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
   };
+
   const linkStyle = {
     color: 'white',
     textDecoration: 'none',
@@ -17,6 +18,7 @@ function Navbar() {
     borderRadius: '3px',
     transition: 'background-color 0.3s'
   };
+
   return (
     <nav style={navStyle}>
       <Link to="/" style={linkStyle}>Home</Link>
@@ -26,4 +28,5 @@ function Navbar() {
     </nav>
   );
 }
+
 export default Navbar;

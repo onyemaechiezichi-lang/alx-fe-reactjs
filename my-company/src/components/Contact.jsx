@@ -1,77 +1,29 @@
-import { useState } from 'react';
+import React from 'react';
 
 function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Thank you for your message, ${formData.name}! We will contact you soon.`);
-    setFormData({ name: '', email: '', message: '' }); // Clear the form
-  };
- const inputStyle = {
-    display: 'block', 
-    margin: '10px 0', 
-    padding: '10px', 
-    width: '100%', 
-    maxWidth: '400px', 
-    boxSizing: 'border-box',
-    borderRadius: '5px',
-    border: '1px solid #ccc'
-  };
-
-  const buttonStyle = {
-    padding: '10px 20px',
-    backgroundColor: '#ffc107',
-    color: '#343a40',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginTop: '10px'
-  };
   return (
-    <div style={{ padding: '20px' }}>
-      <h1 style={{ color: '#ffc107' }}>Contact Us</h1>
-      <form onSubmit={handleSubmit} style={{ border: '1px solid #eee', padding: '20px', borderRadius: '8px' }}>
-        <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>Name:</label>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleChange}
-          style={inputStyle}
-          required
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Contact Us</h1>
+      <p>Fill out the form below to get in touch.</p>
+      <form style={{ maxWidth: '400px', margin: '0 auto', padding: '20px', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
+        <input 
+          type="email" 
+          placeholder="Your Email" 
+          style={{ width: '100%', padding: '10px', margin: '10px 0', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }} 
+          required 
         />
-        <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={formData.email}
-          onChange={handleChange}
-          style={inputStyle}
-          required
-        />
-        <label htmlFor="message" style={{ display: 'block', marginBottom: '5px' }}>Message:</label>
-        <textarea
-          id="message"
-          name="message"
-          placeholder="Your Message"
-          value={formData.message}
-          onChange={handleChange}
-          style={{...inputStyle, minHeight: '100px'}}
-          required
-        />
-        <button type="submit" style={buttonStyle}>Send Message</button>
+        <textarea 
+          placeholder="Your Message" 
+          rows="5" 
+          style={{ width: '100%', padding: '10px', margin: '10px 0', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box' }} 
+          required 
+        ></textarea>
+        <button 
+          type="submit" 
+          style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', transition: 'background-color 0.3s' }}
+        >
+          Send Message
+        </button>
       </form>
     </div>
   );
