@@ -1,26 +1,12 @@
-import React, { useContext } from 'react';
-import UserContext from './UserContext';
-
-// userData prop removed
-function UserDetails() {
-  // Consume context using the useContext hook
-  const userData = useContext(UserContext);
-
-  if (!userData) {
-    return <p className="text-red-500 font-medium">Loading user data...</p>;
-  }
+import React, { useContext } from 'react'; // Import useContext
+import { UserContext } from './UserContext'; // Import UserContext
+function UserDetails() { // No need for userData prop
+  const userData = useContext(UserContext); // Consume userData from context
 
   return (
-    <div className="p-4 border border-blue-400 rounded-lg bg-blue-100">
-      <h5 className="font-bold text-blue-800 mb-2">
-        User Details (UserDetails.jsx)
-      </h5>
-      <p className="text-gray-700">
-        <span className="font-semibold">Name:</span> {userData.name}
-      </p>
-      <p className="text-gray-700">
-        <span className="font-semibold">Email:</span> {userData.email}
-      </p>
+    <div>
+      <p>Name: {userData.name}</p>
+      <p>Email: {userData.email}</p>
     </div>
   );
 }
