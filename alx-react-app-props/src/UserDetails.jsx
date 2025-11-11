@@ -8,7 +8,6 @@ function UserDetails() {
   if (!user) {
     return <div>Loading user data...</div>;
   }
-
   return (
     <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '5px' }}>
       <h4>User Details (Data consumed via Context)</h4>
