@@ -1,12 +1,20 @@
-import ProfilePage from './ProfilePage';
-import { UserContext } from './UserContext'; // Import UserContext
+import React, { useState } from "react";
+import { UserContext } from "./UserContext";
+import UserProfile from "./components/UserProfile";
 
 function App() {
-  const userData = { name: "Jane Doe", email: "jane.doe@example.com" };
+  const [user, setUser] = useState({
+    name: "Jane Doe",
+    email: "jane.doe@example.com",
+    location: "New York",
+  });
 
   return (
-    <UserContext.Provider value={userData}> {/* Provide userData */}
-      <ProfilePage /> {/* No need to pass userData as prop here */}
+    <UserContext.Provider value={{ user, setUser }}>
+      <div>
+        <h1>Welcome to the User Profile App</h1>
+        <UserProfile />
+      </div>
     </UserContext.Provider>
   );
 }
