@@ -1,21 +1,27 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import Home from './components/Home.jsx';
-import About from './components/About.jsx';
-import Services from './components/Services.jsx';
-import Contact from './components/Contact.jsx';
+import React from 'react';
+import UserContext from './UserContext';
+import ProfilePage from './ProfilePage';
+
+// Mock user data that will be passed via Context
+const mockUser = {
+  id: 1,
+  firstName: 'Zizzy',
+  lastName: 'Software',
+  email: 'zizzy.software@alx.com',
+  jobTitle: 'Frontend Developer',
+  company: 'ALX',
+  bio: 'Learning React and state management. Context API eliminates prop drilling!'
+};
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </BrowserRouter>
+    // The Provider makes 'mockUser' available to all children components
+    <UserContext.Provider value={mockUser}>
+      <div className="App">
+        <h1>Task 2: Context API Refactoring</h1>
+        <ProfilePage />
+      </div>
+    </UserContext.Provider>
   );
 }
 

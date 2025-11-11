@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import UserContext from './UserContext';
 
 function UserDetails() {
-  // Use useContext hook to get the user object directly
+  // Use useContext hook to get the user object directly from the Context
   const user = useContext(UserContext);
 
   if (!user) {
