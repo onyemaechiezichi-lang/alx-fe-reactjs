@@ -83,7 +83,7 @@ const AddRecipeForm = () => {
             type="button" 
             onClick={() => setIsAdding(false)}
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200">
-            Cancel"
+            Cancel
           </button>
           <button 
             type="submit"
