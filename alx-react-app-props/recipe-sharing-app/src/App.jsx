@@ -9,7 +9,7 @@ const RecipeList = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">Available Recipes ({recipes.length})</h2>
-      
+
       {recipes.length === 0 ? (
         <p className="text-gray-500 italic">No recipes added yet. Be the first!</p>
       ) : (
@@ -41,7 +41,7 @@ const AddRecipeForm = () => {
 
     // Call the Zustand action
     addRecipe({ title: title.trim(), description: description.trim() });
-    
+
     // Clear the form
     setTitle('');
     setDescription('');
@@ -83,7 +83,7 @@ const AddRecipeForm = () => {
             type="button" 
             onClick={() => setIsAdding(false)}
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200">
-            Cancel
+            Cancel"
           </button>
           <button 
             type="submit"
