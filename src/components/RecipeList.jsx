@@ -1,12 +1,12 @@
-import { useState } from 'react'; // <-- IMPORT useState
+import { useState } from 'react';
+import { Link } from 'react-router-dom'; // <-- NEW IMPORT
 import { useRecipeStore } from '../store/recipeStore';
-import EditRecipeForm from './EditRecipeForm.jsx'; // <-- ADD THE .jsx EXTENSION
+import EditRecipeForm from './EditRecipeForm.jsx';
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
-  // NEW STATE for tracking the recipe being edited
-  const [editingId, setEditingId] = useState(null); 
+  const [editingId, setEditingId] = useState(null); // State for tracking the recipe being edited
 
   return (
     <div>
@@ -19,13 +19,17 @@ const RecipeList = () => {
             // 1. Show Edit Form if this recipe is being edited
             <EditRecipeForm 
               recipe={recipe} 
-              setEditing={setEditingId} // Pass setEditingId to close the form
+              setEditing={setEditingId} 
             />
           ) : (
             // 2. Show Recipe Details and Buttons otherwise
             <>
-              <h3>{recipe.title}</h3>
+              {/* Link to the RecipeDetails page using the recipe ID */}
+              <Link to={`/recipes/${recipe.id}`}> 
+                <h3>{recipe.title}</h3> 
+              </Link>
               <p>{recipe.description}</p>
+              
               <button onClick={() => setEditingId(recipe.id)}>Edit</button> 
               <button onClick={() => deleteRecipe(recipe.id)} style={{ marginLeft: '10px' }}>
                 Delete
