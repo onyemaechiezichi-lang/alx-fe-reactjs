@@ -4,6 +4,7 @@ import { useRecipeStore } from '../store/recipeStore';
 import EditRecipeForm from './EditRecipeForm';
 
 const RecipeList = () => {
+  // Select state and actions
   const recipes = useRecipeStore((state) => state.recipes);
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
   const [editingId, setEditingId] = useState(null);
@@ -19,16 +20,19 @@ const RecipeList = () => {
           style={{ marginBottom: '20px', border: '1px solid #eee', padding: '15px' }}
         >
           {editingId === recipe.id ? (
+            // Display Edit form when editingId matches recipe.id
             <EditRecipeForm 
               recipe={recipe} 
               setEditing={setEditingId} 
             />
           ) : (
+            // Display Recipe details (Task 0 feature) and buttons
             <>
-              <Link to={`/recipe/${recipe.id}`}>
+              <Link to={`/recipes/${recipe.id}`}>
                 <h3>{recipe.title}</h3>
               </Link>
               <p>{recipe.description}</p>
+              
               <button onClick={() => setEditingId(recipe.id)}>Edit</button>
               <button 
                 onClick={() => deleteRecipe(recipe.id)} 

@@ -8,6 +8,12 @@ const AddRecipeForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    // Simple validation (Task 0 feature)
+    if (!title.trim() || !description.trim()) {
+      alert('Title and Description cannot be empty.');
+      return;
+    }
 
     addRecipe({
       id: Date.now(),
@@ -20,7 +26,7 @@ const AddRecipeForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
       <h2>Add Recipe</h2>
 
       <input
@@ -28,6 +34,7 @@ const AddRecipeForm = () => {
         placeholder="Recipe title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
       <br /><br />
 
@@ -35,6 +42,7 @@ const AddRecipeForm = () => {
         placeholder="Recipe description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        required
       />
       <br /><br />
 
@@ -42,4 +50,4 @@ const AddRecipeForm = () => {
     </form>
   );
 };
-export default AddRecipeForm; // <-- Correct Default Export
+export default AddRecipeForm;
