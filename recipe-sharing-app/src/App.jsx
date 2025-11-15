@@ -1,15 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// We must explicitly use the .jsx extension to prevent the "Could not resolve" errors.
+// Using explicit .jsx extensions to ensure imports resolve correctly.
 import AddRecipeForm from './components/AddRecipeForm.jsx'; 
 import RecipeList from './components/RecipeList.jsx';
 import RecipeDetail from './components/RecipeDetail.jsx'; 
 
 /**
- * Component that renders the original Task 0 structure, including the
- * main title, styling, AddRecipeForm, and RecipeList. This is used 
- * for the home route (/).
+ * Component that renders the original Task 0 structure (title, form, list)
+ * including the specific inline styling.
  */
 const HomePageContent = () => (
   <div 
@@ -24,6 +23,7 @@ const HomePageContent = () => (
     <h1>**Zustand Recipe Sharing App**</h1>
     <p>Demonstrating simple state management with Zustand.</p>
     
+    {/* Task 0: Original Component Layout */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
       <AddRecipeForm />
       <RecipeList />
@@ -36,10 +36,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Route 1: Home page, rendering the merged Task 0 structure */}
+        {/* Route 1: Home page, rendering the Task 0 structure */}
         <Route path="/" element={<HomePageContent />} />
         
-        {/* Route 2: Detail page for individual recipes (New feature) */}
+        {/* Route 2: Detail page for individual recipes (Task 1) */}
         <Route path="/recipes/:id" element={<RecipeDetail />} />
       </Routes>
     </Router>
