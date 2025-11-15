@@ -6,17 +6,14 @@ const EditRecipeForm = ({ recipe, setEditing }) => {
   const [description, setDescription] = useState(recipe.description);
   const updateRecipe = useRecipeStore((state) => state.updateRecipe);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();  // <- This line is required!
     updateRecipe({ ...recipe, title, description });
     setEditing(null); // Exit edit mode after saving
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}
-    >
+    <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
       <div>
         <label>Title:</label>
         <input 
@@ -31,11 +28,13 @@ const EditRecipeForm = ({ recipe, setEditing }) => {
         <textarea 
           value={description} 
           onChange={(e) => setDescription(e.target.value)} 
-          required 
+          required
         />
       </div>
-      <button type="submit" style={{ marginRight: '10px' }}>Save</button>
-      <button type="button" onClick={() => setEditing(null)}>Cancel</button>
+      <button type="submit">Save</button>
+      <button type="button" onClick={() => setEditing(null)} style={{ marginLeft: '10px' }}>
+        Cancel
+      </button>
     </form>
   );
 };
