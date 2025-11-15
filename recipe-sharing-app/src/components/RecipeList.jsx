@@ -1,42 +1,68 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecipeStore } from '../store/recipeStore';
-import EditRecipeForm from './EditRecipeForm';
+import useRecipeStore from '../store/recipeStore';
+import EditRecipeForm from './EditRecipeForm.jsx'; 
+import { useEffect } from 'react'; 
 
 const RecipeList = () => {
   // Select state and actions
-  const recipes = useRecipeStore((state) => state.recipes);
+  // 🚨 TASK 2 CHANGE: Read from filteredRecipes instead of recipes
+  const filteredRecipes = useRecipeStore((state) => state.filteredRecipes);
+  const searchTerm = useRecipeStore((state) => state.searchTerm);
+  const filterRecipes = useRecipeStore((state) => state.filterRecipes);
   const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
   const [editingId, setEditingId] = useState(null);
+  
+  // Rerun filter when component mounts or recipes array changes (safety)
+  const recipes = useRecipeStore((state) => state.recipes);
+  useEffect(() => {
+      filterRecipes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipes.length]); // Dependency on recipes.length ensures it updates after add/delete
+
 
   return (
     <div>
-      <h2>Recipe List</h2>
-      {recipes.length === 0 && <p>No recipes added yet.</p>}
+      <h2>Recipe List ({filteredRecipes.length} results)</h2>
+      {filteredRecipes.length === 0 && (
+        <p>
+          {searchTerm 
+            ? `No recipes found matching "${searchTerm}".` 
+            : "No recipes added yet."
+          }
+        </p>
+      )}
 
-      {recipes.map((recipe) => (
+      {filteredRecipes.map((recipe) => (
         <div 
           key={recipe.id} 
-          style={{ marginBottom: '20px', border: '1px solid #eee', padding: '15px' }}
+          style={{ marginBottom: '15px', border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}
         >
           {editingId === recipe.id ? (
-            // Display Edit form when editingId matches recipe.id
-            <EditRecipeForm 
-              recipe={recipe} 
-              setEditing={setEditingId} 
-            />
+            // TASK 1 EDITING MODE: Display Edit form
+            <EditRecipeForm recipe={recipe} setEditing={setEditingId} />
           ) : (
-            // Display Recipe details (Task 0 feature) and buttons
+            // TASK 0/1 DISPLAY MODE
             <>
-              <Link to={`/recipes/${recipe.id}`}>
-                <h3>{recipe.title}</h3>
+              {/* TASK 1 LINK: Added for detail view */}
+              <Link 
+                to={`/recipes/${recipe.id}`}
+                style={{ textDecoration: 'none', color: '#007bff' }}
+              >
+                <h3 style={{ margin: '0 0 5px 0' }}>{recipe.title}</h3> 
               </Link>
-              <p>{recipe.description}</p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '0.9em' }}>{recipe.description}</p>
               
-              <button onClick={() => setEditingId(recipe.id)}>Edit</button>
+              {/* TASK 1 BUTTONS */}
               <button 
-                onClick={() => deleteRecipe(recipe.id)} 
-                style={{ marginLeft: '10px' }}
+                onClick={() => setEditingId(recipe.id)}
+                style={{ padding: '5px 10px', backgroundColor: '#ffc107', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '10px' }}
+              >
+                Edit
+              </button>
+              <button 
+                onClick={() => deleteRecipe(recipe.id)}
+                style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
               >
                 Delete
               </button>

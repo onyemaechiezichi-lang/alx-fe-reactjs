@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddRecipeForm from './components/AddRecipeForm.jsx'; 
 import RecipeList from './components/RecipeList.jsx';
 import RecipeDetail from './components/RecipeDetail.jsx'; 
+import SearchBar from './components/SearchBar.jsx'; // New Import
 
 /**
  * Component that renders the original Task 0 structure (title, form, list)
@@ -23,8 +24,11 @@ const HomePageContent = () => (
     <h1>**Zustand Recipe Sharing App**</h1>
     <p>Demonstrating simple state management with Zustand.</p>
     
-    {/* Task 0: Original Component Layout */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+      {/* TASK 2 ADDITION: Search Bar placed prominently */}
+      <SearchBar /> 
+
+      {/* Task 0/1 Components */}
       <AddRecipeForm />
       <RecipeList />
     </div>
@@ -36,7 +40,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Route 1: Home page, rendering the Task 0 structure */}
+        {/* Route 1: Home page, rendering the Task 0/2 structure */}
         <Route path="/" element={<HomePageContent />} />
         
         {/* Route 2: Detail page for individual recipes (Task 1) */}
