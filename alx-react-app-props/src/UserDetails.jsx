@@ -1,21 +1,16 @@
 import React, { useContext } from 'react';
-import UserContext from './UserContext';
+import UserContext from './UserContext'; // <-- NEW: Import the Context
 
+// Remove the userData prop from the function signature
 function UserDetails() {
-  // Use useContext hook to get the user object directly from the Context
-  const user = useContext(UserContext);
-
-  if (!user) {
-    return <div>Loading user data...</div>;
-  }
-
+  // Use the useContext hook to pull the userData directly from the context
+  const userData = useContext(UserContext); 
+  
   return (
-    <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '5px' }}>
-      <h4>User Details (Data consumed via Context)</h4>
-      <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Title:</strong> {user.jobTitle} at {user.company}</p>
-      <p><strong>Bio:</strong> {user.bio}</p>
+    <div>
+      <h2>User Details (Context API)</h2>
+      <p>Name: {userData.name}</p>
+      <p>Email: {userData.email}</p>
     </div>
   );
 }

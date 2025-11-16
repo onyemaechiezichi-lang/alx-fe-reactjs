@@ -1,26 +1,15 @@
-import React from 'react';
-import UserContext from './UserContext';
 import ProfilePage from './ProfilePage';
-
-// Mock user data that will be passed via Context
-const mockUser = {
-  id: 1,
-  firstName: 'Zizzy',
-  lastName: 'Software',
-  email: 'zizzy.software@alx.com',
-  jobTitle: 'Frontend Developer',
-  company: 'ALX',
-  bio: 'Learning React and state management. Context API eliminates prop drilling!'
-};
+import UserContext from './UserContext'; // <-- NEW: Import the Context
 
 function App() {
+  // Data we want to share globally
+  const userData = { name: "Jane Doe", email: "jane.doe@example.com" };
+
   return (
-    // The Provider makes 'mockUser' available to all children components
-    <UserContext.Provider value={mockUser}>
-      <div className="App">
-        <h1>Task 2: Context API Refactoring</h1>
-        <ProfilePage />
-      </div>
+    // Wrap the components that need access in UserContext.Provider
+    <UserContext.Provider value={userData}>
+      {/* Remove userData prop passing here */}
+      <ProfilePage /> 
     </UserContext.Provider>
   );
 }
