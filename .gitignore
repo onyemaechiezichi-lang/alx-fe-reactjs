@@ -12,6 +12,8 @@
 
 # misc
 .DS_Store
+
+# CRITICAL: Ensure .env is explicitly here
 .env
 .env.*
 .vercel
