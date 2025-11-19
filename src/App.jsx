@@ -1,123 +1,136 @@
-import React, { useState, useCallback } from 'react';
-// Ensure these paths are correct for your project structure
+import React, { useState, useEffect } from 'react';
 import Search from './components/Search';
 import UserCard from './components/UserCard';
+import Pagination from './components/Pagination';
 import { searchUsers } from './services/githubService';
-import { Link } from 'react-router-dom'; // Requires npm install react-router-dom
-import './index.css'; 
 
-// --- Navbar Component (Integrated from merge) ---
-function Navbar() {
-  return (
-    <nav className="bg-gray-800 p-4 shadow-md flex justify-center">
-      <Link to="/" className="text-white text-lg font-medium mx-4 hover:text-indigo-400 transition-colors">Home</Link>
-      <Link to="/about" className="text-white text-lg font-medium mx-4 hover:text-indigo-400 transition-colors">About</Link>
-      <Link to="/services" className="text-white text-lg font-medium mx-4 hover:text-indigo-400 transition-colors">Services</Link>
-      <Link to="/contact" className="text-white text-lg font-medium mx-4 hover:text-indigo-400 transition-colors">Contact</Link>
-    </nav>
-  );
-}
-// --- End Navbar Component ---
-
-
-// --- Main App Component (Advanced Search Logic) ---
 function App() {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  
+  // New State for Pagination and Advanced Search Criteria
   const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(10); // Fixed page size
+  
+  // State to hold the criteria object for repeated searches (e.g., on page change)
   const [currentCriteria, setCurrentCriteria] = useState(null);
-  const perPage = 10;
 
-  // Function to handle the search (either initial or pagination)
-  const handleSearch = useCallback(async (criteria = currentCriteria, page = 1, append = false) => {
-    if (!criteria || (!criteria.username && !criteria.location && !criteria.minRepos)) return;
+  // --- Search Logic ---
+  const handleSearch = async (criteria, currentPage = 1) => {
+    // If criteria is new (initial search), reset page to 1 and save criteria
+    if (currentPage === 1) {
+      setCurrentCriteria(criteria);
+      setPage(1);
+    }
+    
+    // Do not proceed if criteria is null (shouldn't happen on initial search)
+    if (!criteria && !currentCriteria) return;
 
-    setLoading(true);
+    // Use currentCriteria if criteria is null (happens during pagination)
+    const activeCriteria = criteria || currentCriteria;
+
     setError(null);
-    setCurrentCriteria(criteria);
+    setLoading(true);
 
     try {
-      const data = await searchUsers(criteria, page, perPage);
-
-      setTotalCount(data.total_count);
-      setCurrentPage(page);
-
-      if (append) {
-        setResults(prevResults => [...prevResults, ...data.items]);
-      } else {
-        setResults(data.items);
-      }
+      const response = await searchUsers(activeCriteria, currentPage, perPage);
+      setUsers(response.items);
+      setTotalCount(response.total_count);
     } catch (err) {
-      setError(err.message || 'An unknown error occurred during the search.');
-      setResults([]);
+      console.error(err);
+      setError(err.message || 'An unknown error occurred during search.');
+      setUsers([]); // Clear previous results on error
+      setTotalCount(0);
     } finally {
       setLoading(false);
     }
-  }, [currentCriteria]);
-
-  // Handler for the Search component's submission
-  const handleInitialSearch = (criteria) => {
-    // Reset to page 1 for a new search
-    handleSearch(criteria, 1, false);
   };
 
-  // Handler for "Load More" button
-  const handleLoadMore = () => {
-    // Load the next page, appending results
-    handleSearch(currentCriteria, currentPage + 1, true);
-  };
+  // --- Pagination Effect ---
+  // This useEffect ensures that when the page state changes (not 1), the search runs again
+  useEffect(() => {
+    // Only run the search if the page changes AND we have criteria saved
+    if (page !== 1 && currentCriteria) {
+      // Pass the saved criteria and the new page number
+      handleSearch(currentCriteria, page);
+    }
+  }, [page]); 
 
-  const hasMore = results.length < totalCount;
-
+  // --- JSX Rendering ---
   return (
-    <>
-      <Navbar /> {/* Integrated Navbar */}
-      <div className="container mx-auto p-4 max-w-4xl">
-        <h1 className="text-3xl font-extrabold text-center text-gray-900 mb-6 mt-4">
-          GitHub User Search
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
+      <header className="text-center mb-8">
+        <h1 className="text-4xl font-extrabold text-indigo-700 tracking-tight sm:text-5xl">
+          GitHub Explorer
         </h1>
+        <p className="mt-2 text-lg text-gray-500">
+          Find developers using basic keywords or advanced criteria.
+        </p>
+      </header>
+      
+      {/* Search Component (Handles initial search and criteria setting) */}
+      <div className="max-w-4xl mx-auto">
+        <Search onSearch={(criteria) => handleSearch(criteria, 1)} />
+      </div>
 
-        <Search onSearch={handleInitialSearch} />
+      {/* Main Content Area */}
+      <main className="max-w-6xl mx-auto">
+        {loading && (
+          <div className="text-center p-4 text-indigo-600 font-semibold">
+            Loading results...
+          </div>
+        )}
 
-        {/* Results Display Area */}
-        {loading && <p className="text-center text-indigo-600 font-medium py-4">Loading users...</p>}
-        {error && <p className="text-center text-red-600 font-medium py-4">Error: {error}</p>}
-        
-        {!loading && results.length > 0 && (
-          <div className="mb-6">
-            <p className="text-lg font-semibold text-gray-700">
-              Found **{totalCount.toLocaleString()}** matching users (showing {results.length})
-            </p>
-            <div className="mt-4 space-y-4">
-              {results.map((user) => (
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-4" role="alert">
+            <p className="font-bold">Search Error</p>
+            <p className="text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Display Results */}
+        {!loading && !error && users.length > 0 && (
+          <>
+            <div className="text-sm text-gray-600 mb-4">
+                Showing {users.length} of {totalCount} total users found.
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {users.map((user) => (
+                // UserCard now receives the detailed user object
                 <UserCard key={user.id} user={user} />
               ))}
             </div>
-          </div>
+            
+            {/* Pagination Component */}
+            <Pagination
+              currentPage={page}
+              totalCount={totalCount}
+              perPage={perPage}
+              onPageChange={setPage}
+            />
+          </>
         )}
         
-        {!loading && results.length === 0 && currentCriteria && (
-            <p className="text-center text-gray-500 py-6 border-t">
-                No users found matching the criteria. Try a different search!
-            </p>
+        {/* No Results Message */}
+        {!loading && !error && users.length === 0 && currentCriteria && (
+            <div className="text-center p-12 text-gray-500 border border-dashed border-gray-300 rounded-xl">
+                <p className="text-lg font-medium">No results found.</p>
+                <p className="text-sm">Try adjusting your search criteria or keywords.</p>
+            </div>
         )}
 
-        {/* Pagination / Load More */}
-        {!loading && hasMore && (
-          <div className="text-center mt-6">
-            <button
-              onClick={handleLoadMore}
-              disabled={loading}
-              className="px-6 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
-            >
-              Load More Users
-            </button>
-          </div>
+        {/* Initial Prompt */}
+        {!currentCriteria && (
+            <div className="text-center p-12 text-gray-500 border border-dashed border-gray-300 rounded-xl">
+                <p className="text-lg font-medium">Start your GitHub Search</p>
+                <p className="text-sm">Use the form above to search for users.</p>
+            </div>
         )}
-      </div>
-    </>
+
+      </main>
+    </div>
   );
 }
 

@@ -1,88 +1,135 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Search from './components/Search';
+import UserCard from './components/UserCard';
+import Pagination from './components/Pagination';
+import { searchUsers } from './services/githubService';
 
-const Search = ({ onSearch }) => {
-  // State to hold the values for the advanced search form
-  const [username, setUsername] = useState('');
-  const [location, setLocation] = useState('');
-  const [minRepos, setMinRepos] = useState('');
+function App() {
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  // New State for Pagination and Advanced Search Criteria
+  const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(10); // Fixed page size
+  
+  // State to hold the criteria object for repeated searches (e.g., on page change)
+  const [currentCriteria, setCurrentCriteria] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Pass the collected advanced search criteria to the parent component/handler
-    // We only include location/minRepos if they are actually entered.
-    onSearch({
-      username: username.trim(),
-      location: location.trim(),
-      minRepos: minRepos.trim() ? parseInt(minRepos.trim(), 10) : null,
-    });
+  // --- Search Logic ---
+  const handleSearch = async (criteria, currentPage = 1) => {
+    // If criteria is new (initial search), reset page to 1 and save criteria
+    if (currentPage === 1) {
+      setCurrentCriteria(criteria);
+      setPage(1);
+    }
+    
+    // Do not proceed if criteria is null (shouldn't happen on initial search)
+    if (!criteria && !currentCriteria) return;
+
+    // Use currentCriteria if criteria is null (happens during pagination)
+    const activeCriteria = criteria || currentCriteria;
+
+    setError(null);
+    setLoading(true);
+
+    try {
+      const response = await searchUsers(activeCriteria, currentPage, perPage);
+      setUsers(response.items);
+      setTotalCount(response.total_count);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'An unknown error occurred during search.');
+      setUsers([]); // Clear previous results on error
+      setTotalCount(0);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // --- Pagination Effect ---
+  // This useEffect ensures that when the page state changes (not 1), the search runs again
+  useEffect(() => {
+    if (page !== 1 && currentCriteria) {
+      handleSearch(currentCriteria, page);
+    }
+  }, [page]); 
+
+  // --- JSX Rendering ---
   return (
-    <div className="p-4 md:p-8 bg-gray-50 shadow-lg rounded-xl mb-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">
-        🔍 GitHub Advanced User Search
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Main Search Query (Username) */}
-        <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-            Username or Keywords
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="e.g., react developer"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border"
-            required // Basic search requires a query
-          />
-        </div>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
+      <header className="text-center mb-8">
+        <h1 className="text-4xl font-extrabold text-indigo-700 tracking-tight sm:text-5xl">
+          GitHub Explorer
+        </h1>
+        <p className="mt-2 text-lg text-gray-500">
+          Find developers using basic keywords or advanced criteria.
+        </p>
+      </header>
+      
+      {/* Search Component (Handles initial search and criteria setting) */}
+      <div className="max-w-4xl mx-auto">
+        <Search onSearch={(criteria) => handleSearch(criteria, 1)} />
+      </div>
 
-        {/* Advanced Search Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Location Field */}
-          <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-              Location
-            </label>
-            <input
-              type="text"
-              id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="e.g., London"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border"
-            />
+      {/* Main Content Area */}
+      <main className="max-w-6xl mx-auto">
+        {loading && (
+          <div className="text-center p-4 text-indigo-600 font-semibold">
+            Loading results...
           </div>
+        )}
 
-          {/* Min Repositories Field */}
-          <div>
-            <label htmlFor="min-repos" className="block text-sm font-medium text-gray-700">
-              Min. Public Repositories
-            </label>
-            <input
-              type="number"
-              id="min-repos"
-              value={minRepos}
-              onChange={(e) => setMinRepos(e.target.value)}
-              placeholder="e.g., 10"
-              min="0"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border"
-            />
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-4" role="alert">
+            <p className="font-bold">Search Error</p>
+            <p className="text-sm">{error}</p>
           </div>
-        </div>
+        )}
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Search GitHub Users
-        </button>
-      </form>
+        {/* Display Results */}
+        {!loading && !error && users.length > 0 && (
+          <>
+            <div className="text-sm text-gray-600 mb-4">
+                Showing {users.length} of {totalCount} total users found.
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {users.map((user) => (
+                // UserCard now receives the detailed user object
+                <UserCard key={user.id} user={user} />
+              ))}
+            </div>
+            
+            {/* Pagination Component */}
+            <Pagination
+              currentPage={page}
+              totalCount={totalCount}
+              perPage={perPage}
+              onPageChange={setPage}
+            />
+          </>
+        )}
+        
+        {/* No Results Message */}
+        {!loading && !error && users.length === 0 && currentCriteria && (
+            <div className="text-center p-12 text-gray-500 border border-dashed border-gray-300 rounded-xl">
+                <p className="text-lg font-medium">No results found.</p>
+                <p className="text-sm">Try adjusting your search criteria or keywords.</p>
+            </div>
+        )}
+
+        {/* Initial Prompt */}
+        {!currentCriteria && (
+            <div className="text-center p-12 text-gray-500 border border-dashed border-gray-300 rounded-xl">
+                <p className="text-lg font-medium">Start your GitHub Search</p>
+                <p className="text-sm">Use the form above to search for users.</p>
+            </div>
+        )}
+
+      </main>
     </div>
   );
-};
+}
 
-export default Search;
+export default App;
