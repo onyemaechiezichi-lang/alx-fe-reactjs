@@ -1,5 +1,18 @@
 // Note: We are using built-in fetch for API calls for maximum compatibility.
+import axios from "axios";
 
+export const fetchAdvancedUsers = async ({ keyword, location, minRepos }) => {
+    // Build GitHub search query
+    let query = keyword ? `${keyword}` : "";
+
+    if (location) query += `+location:${location}`;
+    if (minRepos) query += `+repos:>=${minRepos}`;
+
+    const url = `https://api.github.com/search/users?q=${query}`;
+
+    const response = await axios.get(url);
+    return response.data;
+};
 // ----------------------
 // 1. Configuration
 // ----------------------
