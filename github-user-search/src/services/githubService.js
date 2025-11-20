@@ -7,7 +7,6 @@
 // ----------------------
 // Ensure you are using the correct environment variable prefix for your setup (VITE_ or REACT_APP_).
 // We'll use VITE_GITHUB_TOKEN here as it's common for Vite projects.
-// If GITHUB_TOKEN is not defined, requests will be unauthenticated and subject to lower rate limits.
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 const API_BASE_URL = "https://api.github.com";
 const SEARCH_URL = `${API_BASE_URL}/search/users`;
