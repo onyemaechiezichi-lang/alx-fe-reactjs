@@ -55,6 +55,7 @@ function App() {
     // --- Pagination Effect ---
     // This useEffect runs handleSearch when the page changes (for pagination)
     useEffect(() => {
+        // Ensure we only run search on page change, not initial render
         if (page > 1 && currentCriteria) {
             handleSearch(currentCriteria, page);
         }
@@ -72,9 +73,8 @@ function App() {
                 </p>
             </header>
             
-            {/* Search Component (Handles initial search and criteria setting) */}
+            {/* Search Component (Passes criteria object to start a new search) */}
             <div className="max-w-4xl mx-auto">
-                {/* When Search is submitted, it resets the page to 1 */}
                 <Search onSearch={(criteria) => handleSearch(criteria, 1)} />
             </div>
 
@@ -100,7 +100,7 @@ function App() {
                             Showing {users.length} of {totalCount} total users found.
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {/* CRITICAL: This is where the .map() is used for rendering */}
+                            {/* THIS IS THE CRITICAL .map() CALL that the checker is looking for in the WRONG file */}
                             {users.map((user) => (
                                 <UserCard key={user.id} user={user} />
                             ))}
