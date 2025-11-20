@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import { fetchAdvancedUsers as fetchUserData } from "../services/githubService";
+import React, { useState } from "react";
+import { fetchAdvancedUsers } from "../services/githubService";
 
 function Search() {
     const [keyword, setKeyword] = useState("");
@@ -126,5 +127,8 @@ function Search() {
         </div>
     );
 }
+
+export default Search;
+
 
 export default Search;
