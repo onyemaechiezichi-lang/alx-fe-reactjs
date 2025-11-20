@@ -21,6 +21,13 @@ function Search() {
                 keyword,
                 location,
                 minRepos,
+            await fetchUserData(username.trim());
+      setUserData(data);
+    } catch {
+      setError("Looks like we cant find the user");
+    } finally {
+      setLoading(false);
+    }
             });
 
             if (data.items && data.items.length > 0) {
