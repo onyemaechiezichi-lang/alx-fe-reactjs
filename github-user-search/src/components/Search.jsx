@@ -1,94 +1,130 @@
 import React, { useState } from "react";
+import { fetchAdvancedUsers } from "../services/githubService";
 
-function Search({ onSearch }) {
-  const [formData, setFormData] = useState({
-    keyword: "",
-    location: "",
-    minRepos: "",
-  });
+function Search() {
+    const [keyword, setKeyword] = useState("");
+    const [location, setLocation] = useState("");
+    const [minRepos, setMinRepos] = useState("");
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  // fields configuration → THIS is what allows .map()
-  const fields = [
-    {
-      id: "keyword",
-      label: "Username or Keywords (e.g., react, john)",
-      type: "text",
-      placeholder: "Search GitHub users...",
-      span: "md:col-span-2",
-    },
-    {
-      id: "location",
-      label: "Location (Optional)",
-      type: "text",
-      placeholder: "e.g., New York, London",
-    },
-    {
-      id: "minRepos",
-      label: "Min. Repositories (Optional)",
-      type: "number",
-      placeholder: "e.g., 10, 50",
-    },
-  ];
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+        setResults([]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
-  };
+        try {
+            const data = await fetchAdvancedUsers({
+                keyword,
+                location,
+                minRepos,
+            });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+            if (data.items && data.items.length > 0) {
+                setResults(data.items);
+            } else {
+                setError("Looks like we can’t find the user");
+            }
+        } catch (err) {
+            setError("Looks like we can’t find the user");
+        }
 
-    const criteria = {
-      keyword: formData.keyword.trim(),
-      location: formData.location.trim(),
-      minRepos:
-        formData.minRepos === "" ? null : parseInt(formData.minRepos, 10),
+        setLoading(false);
     };
 
-    onSearch(criteria);
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-8 border border-gray-100"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-
-        {/* THIS .map IS WHAT THE TEST WANTS */}
-        {fields.map((field) => (
-          <div key={field.id} className={field.span || ""}>
-            <label
-              htmlFor={field.id}
-              className="block text-sm font-medium text-gray-700 mb-1"
+    return (
+        <div className="w-full max-w-4xl mx-auto">
+            <form
+                onSubmit={handleSearch}
+                className="bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-100"
             >
-              {field.label}
-            </label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Username or Keywords
+                        </label>
+                        <input
+                            type="text"
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            className="w-full p-3 border rounded-lg"
+                            placeholder="Search GitHub users..."
+                        />
+                    </div>
 
-            <input
-              type={field.type}
-              id={field.id}
-              value={formData[field.id]}
-              onChange={handleChange}
-              placeholder={field.placeholder}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-            />
-          </div>
-        ))}
-      </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Location
+                        </label>
+                        <input
+                            type="text"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            className="w-full p-3 border rounded-lg"
+                            placeholder="e.g. Lagos, London"
+                        />
+                    </div>
 
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-200"
-        >
-          Search GitHub
-        </button>
-      </div>
-    </form>
-  );
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Min Repos
+                        </label>
+                        <input
+                            type="number"
+                            value={minRepos}
+                            onChange={(e) => setMinRepos(e.target.value)}
+                            className="w-full p-3 border rounded-lg"
+                            placeholder="e.g. 10"
+                        />
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg w-full md:w-auto"
+                >
+                    Search GitHub
+                </button>
+            </form>
+
+            {/* Loading */}
+            {loading && <p className="text-center text-indigo-600">Loading...</p>}
+
+            {/* Error */}
+            {error && (
+                <p className="text-center text-red-500 font-medium">{error}</p>
+            )}
+
+            {/* Results */}
+            {results.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {results.map((user) => (
+                        <div
+                            key={user.id}
+                            className="p-4 bg-white rounded-xl shadow border"
+                        >
+                            <img
+                                src={user.avatar_url}
+                                alt="avatar"
+                                className="w-16 h-16 rounded-full mb-2"
+                            />
+                            <h3 className="font-semibold">{user.login}</h3>
+                            <a
+                                href={user.html_url}
+                                target="_blank"
+                                className="text-indigo-600 underline"
+                                rel="noreferrer"
+                            >
+                                View Profile
+                            </a>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default Search;
