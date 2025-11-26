@@ -1,121 +1,78 @@
-import { useState } from "react";
-import { fetchUserData, fetchAdvancedUsers } from "./services/githubService";
+// src/components/Search.jsx
+import React, { useState } from 'react';
 
-function Search({ onAdvancedSearch }) {
-  const [username, setUsername] = useState("");
-  const [location, setLocation] = useState("");
-  const [minRepos, setMinRepos] = useState("");
-  const [userData, setUserData] = useState(null);
-  const [advancedUsers, setAdvancedUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+function Search({ onSearch }) {
+    const [keyword, setKeyword] = useState('');
+    const [location, setLocation] = useState('');
+    const [minRepos, setMinRepos] = useState('');
 
-  // Basic Search
-  async function handleSearch(e) {
-    e.preventDefault();
-    if (!username.trim()) return;
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const reposValue = minRepos === '' ? null : parseInt(minRepos, 10);
 
-    setLoading(true);
-    setError(null);
-    setUserData(null);
+        // Package all parameters into a single criteria object
+        const criteria = {
+            keyword: keyword.trim(),
+            location: location.trim(),
+            minRepos: reposValue
+        };
+        onSearch(criteria);
+    };
 
-    try {
-      const data = await fetchUserData(username.trim());
-      setUserData(data);
-    } catch {
-      setError("User not found");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // Advanced Search
-  async function handleAdvancedSearch(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setAdvancedUsers([]);
-
-    try {
-      const users = await fetchAdvancedUsers({ username, location, minRepos });
-      setAdvancedUsers(users);
-      if (onAdvancedSearch) onAdvancedSearch(users);
-    } catch {
-      setError("No users found with these criteria.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <div className="max-w-xl mx-auto mt-6 p-6 bg-white shadow rounded-lg">
-      {/* Basic Search Form */}
-      <form onSubmit={handleSearch} className="space-y-4 mb-6">
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Search
-        </button>
-      </form>
-
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-600">{error}</p>}
-
-      {userData && (
-        <div className="border p-4 rounded shadow text-center mb-6">
-          <img src={userData.avatar_url} alt={userData.login} className="w-24 h-24 rounded-full mx-auto mb-2" />
-          <h2 className="text-xl font-bold">{userData.name || userData.login}</h2>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-            View GitHub Profile
-          </a>
-        </div>
-      )}
-
-      {/* Advanced Search Form */}
-      <form onSubmit={handleAdvancedSearch} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          placeholder="Minimum Repos"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <button type="submit" className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
-          Advanced Search
-        </button>
-      </form>
-
-      {/* Advanced Search Results */}
-      {advancedUsers.length > 0 && (
-        <div className="mt-6 space-y-4">
-          <h3 className="text-xl font-bold">Advanced Search Results</h3>
-          {advancedUsers.map((user) => (
-            <div key={user.id} className="p-4 border rounded shadow flex items-center">
-              <img src={user.avatar_url} alt="" className="w-16 h-16 rounded-full mr-4" />
-              <div>
-                <p className="font-semibold">{user.login}</p>
-                <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  View Profile
-                </a>
-              </div>
+    return (
+        <form onSubmit={handleSearch} className="bg-white p-6 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-8 border border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="md:col-span-2">
+                    <label htmlFor="keyword" className="block text-sm font-medium text-gray-700 mb-1">
+                        Username or Keywords (e.g., react, john)
+                    </label>
+                    <input
+                        type="text"
+                        id="keyword"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        placeholder="Search GitHub users..."
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                        Location (Optional)
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        placeholder="e.g., New York, London"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="minRepos" className="block text-sm font-medium text-gray-700 mb-1">
+                        Min. Repositories (Optional)
+                    </label>
+                    <input
+                        type="number"
+                        id="minRepos"
+                        value={minRepos}
+                        onChange={(e) => setMinRepos(e.target.value)}
+                        placeholder="e.g., 10, 50"
+                        min="0"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                    />
+                </div>
             </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            <div className="flex justify-end">
+                <button
+                    type="submit"
+                    className="w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200 transform hover:scale-[1.01]"
+                >
+                    Search GitHub
+                </button>
+            </div>
+        </form>
+    );
 }
 
 export default Search;
