@@ -1,71 +1,141 @@
-import { useState } from 'react';
-import { fetchUserData } from '../services/githubService';
+import { fetchAdvancedUsers as fetchUserData } from "../services/githubService";
+import React, { useState } from "react";
+import { fetchAdvancedUsers } from "../services/githubService";
 
 function Search() {
-  const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+    const [keyword, setKeyword] = useState("");
+    const [location, setLocation] = useState("");
+    const [minRepos, setMinRepos] = useState("");
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  async function handleSearch(e) {
-    e.preventDefault();
-    if (!username.trim()) return;
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+        setResults([]);
 
-    setLoading(true);
-    setError(null);
-    setUserData(null);
-
-    try {
-      const data = await fetchUserData(username.trim());
+        try {
+            const data = await fetchAdvancedUsers({
+                keyword,
+                location,
+                minRepos,
+            await fetchUserData(username.trim());
       setUserData(data);
     } catch {
       setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
     }
-  }
+            });
 
-  return (
-    <div className="max-w-md mx-auto p-4">
-      <form onSubmit={handleSearch} className="mb-4">
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 border border-gray-400 rounded"
-        />
-        <button
-          type="submit"
-          className="mt-2 w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Search
-        </button>
-      </form>
+            if (data.items && data.items.length > 0) {
+                setResults(data.items);
+            } else {
+                setError("Looks like we can’t find the user");
+            }
+        } catch (err) {
+            setError("Looks like we can’t find the user");
+        }
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-600">{error}</p>}
+        setLoading(false);
+    };
 
-      {userData && (
-        <div className="border p-4 rounded shadow text-center">
-          <img
-            src={userData.avatar_url}
-            alt={`${userData.login} avatar`}
-            className="w-24 h-24 rounded-full mx-auto mb-2"
-          />
-          <h2 className="text-xl font-bold">{userData.name || userData.login}</h2>
-          <a
-            href={userData.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            View GitHub Profile
-          </a>
+    return (
+        <div className="w-full max-w-4xl mx-auto">
+            <form
+                onSubmit={handleSearch}
+                className="bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-100"
+            >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Username or Keywords
+                        </label>
+                        <input
+                            type="text"
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            className="w-full p-3 border rounded-lg"
+                            placeholder="Search GitHub users..."
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Location
+                        </label>
+                        <input
+                            type="text"
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            className="w-full p-3 border rounded-lg"
+                            placeholder="e.g. Lagos, London"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Min Repos
+                        </label>
+                        <input
+                            type="number"
+                            value={minRepos}
+                            onChange={(e) => setMinRepos(e.target.value)}
+                            className="w-full p-3 border rounded-lg"
+                            placeholder="e.g. 10"
+                        />
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    className="px-6 py-3 bg-indigo-600 text-white rounded-lg w-full md:w-auto"
+                >
+                    Search GitHub
+                </button>
+            </form>
+
+            {/* Loading */}
+            {loading && <p className="text-center text-indigo-600">Loading...</p>}
+
+            {/* Error */}
+            {error && (
+                <p className="text-center text-red-500 font-medium">{error}</p>
+            )}
+
+            {/* Results */}
+            {results.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {results.map((user) => (
+                        <div
+                            key={user.id}
+                            className="p-4 bg-white rounded-xl shadow border"
+                        >
+                            <img
+                                src={user.avatar_url}
+                                alt="avatar"
+                                className="w-16 h-16 rounded-full mb-2"
+                            />
+                            <h3 className="font-semibold">{user.login}</h3>
+                            <a
+                                href={user.html_url}
+                                target="_blank"
+                                className="text-indigo-600 underline"
+                                rel="noreferrer"
+                            >
+                                View Profile
+                            </a>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
+
+export default Search;
+
 
 export default Search;
