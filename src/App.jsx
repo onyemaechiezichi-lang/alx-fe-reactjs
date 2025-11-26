@@ -3,12 +3,17 @@ import Search from './components/Search';
 import UserCard from './components/UserCard';
 import Pagination from './components/Pagination';
 import { searchUsers } from './services/githubService';
+import UserProfile from './components/UserProfile'; // Add this line
 
 function App() {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+    return (
+    <div className="App">
+      <UserProfile /> {/* Add this line */}
+    </div>
+  );
     // State for Pagination and Advanced Search Criteria
     const [totalCount, setTotalCount] = useState(0);
     const [page, setPage] = useState(1);
