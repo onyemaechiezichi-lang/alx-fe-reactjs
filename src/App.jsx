@@ -3,15 +3,14 @@ import Search from './components/Search';
 import UserCard from './components/UserCard';
 import Pagination from './components/Pagination';
 import { searchUsers } from './services/githubService';
-import UserProfile from './components/UserProfile'; // Add this line
-
+import UserProfile from './components/UserProfile';
 function App() {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     return (
     <div className="App">
-      <UserProfile /> {/* Add this line */}
+      <UserProfile /> {/* 
     </div>
   );
     // State for Pagination and Advanced Search Criteria
