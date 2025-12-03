@@ -54,6 +54,9 @@ const AddRecipeForm = () => {
 
   // Includes Tailwind styling and responsive features (sm:p-10, w-full, etc.)
   return (
+    <div className="min-h-screen bg-gray-100 flex items-start justify-center p-4 sm:p-10 **md:p-12**"> 
+    <div className="bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-4xl">
+      {/* ... rest of the form ... */}
     <div className="min-h-screen bg-gray-100 flex items-start justify-center p-4 sm:p-10">
       <div className="bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-4xl">
         <div className="flex justify-between items-center mb-8 border-b pb-4">
