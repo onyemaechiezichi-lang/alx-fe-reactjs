@@ -1,20 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+// Example of correct src/main.jsx structure
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom'; // <-- NEW IMPORT
-import App from './App.jsx';
+import App from './App.jsx';  // KEEP THIS LINE
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>  {/* <-- WRAP APP IN ROUTER */}
+  <React.StrictMode>
     <App />
-  </BrowserRouter>
+  </React.StrictMode>
 );
+
+// Delete the duplicate import if it exists somewhere else in the file.
+// If there's another 'import App from './App.jsx'' line, remove it.
