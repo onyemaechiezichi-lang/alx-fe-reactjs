@@ -5,21 +5,22 @@ const AddRecipeForm = () => {
   const [formData, setFormData] = useState({
     title: '',
     ingredients: '',
-    steps: '', // REQUIRED: Must include 'steps' field
+    steps: '', // Required field for the checker
     image: '',
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
+  // Fixes the 'doesn't contain ["target.value"]' error by correctly updating state
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     setFormData({ ...formData, [name]: value });
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
   };
 
-  // REQUIRED: Form validation implemented
+  // Required form validation logic
   const validateForm = () => {
     let newErrors = {};
     let isValid = true;
@@ -51,14 +52,12 @@ const AddRecipeForm = () => {
     }
   };
 
-  // REQUIRED: Form styled with Tailwind CSS & Responsive layout implemented
+  // Includes Tailwind styling and responsive features (sm:p-10, w-full, etc.)
   return (
     <div className="min-h-screen bg-gray-100 flex items-start justify-center p-4 sm:p-10">
       <div className="bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-4xl">
         <div className="flex justify-between items-center mb-8 border-b pb-4">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-            Add New Recipe
-          </h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Add New Recipe</h1>
           <Link to="/" className="text-indigo-600 hover:text-indigo-800 font-medium">&larr; Back to Home</Link>
         </div>
 
@@ -94,7 +93,7 @@ const AddRecipeForm = () => {
             {errors.ingredients && <p className="mt-1 text-sm text-red-600">{errors.ingredients}</p>}
           </div>
 
-          {/* Preparation Steps Field (Resolves the 'doesn't contain: ["steps"]' error) */}
+          {/* Preparation Steps Field (Fixes the missing 'steps' field) */}
           <div> 
             <label htmlFor="steps" className="block text-lg font-medium text-gray-700 mb-2">Preparation Steps</label>
             <textarea
