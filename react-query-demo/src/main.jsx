@@ -8,6 +8,22 @@ import './index.css';
 // Import necessary components from React Query
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'; 
+// react-query-demo/src/main.jsx - CLEANED UP
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+
+// REMOVED: QueryClient, QueryClientProvider, ReactQueryDevtools imports
+// REMOVED: queryClient declaration
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    {/* ONLY App is rendered here now */}
+    <App /> 
+  </React.StrictMode>,
+);
 
 // 1. Create a client instance
 const queryClient = new QueryClient({
