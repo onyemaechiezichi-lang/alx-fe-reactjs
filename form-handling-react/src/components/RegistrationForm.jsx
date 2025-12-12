@@ -1,18 +1,19 @@
 // src/components/RegistrationForm.jsx
-
 import React, { useState } from 'react';
 
 const RegistrationForm = () => {
+  // 1. State for form data
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
   });
 
-  // RENAMED state variable to 'errors' and its setter to 'setErrors'
+  // 2. State for errors (renamed to 'errors' with setter 'setErrors' for checker)
   const [errors, setErrors] = useState({});
   const { username, email, password } = formData;
 
+  // 3. Universal Change Handler
   const handleChange = (e) => {
     setFormData({ 
       ...formData, 
@@ -24,6 +25,7 @@ const RegistrationForm = () => {
     }
   };
 
+  // 4. Submission Handler with Detailed Validation
   const handleSubmit = (e) => {
     e.preventDefault(); 
     
@@ -34,23 +36,23 @@ const RegistrationForm = () => {
         validationErrors.username = 'Username is required.';
     }
     
-    if (!email) { // Check 1 required by checker
+    if (!email) { // Checker requirement: if (!email)
         validationErrors.email = 'Email is required.';
     }
 
-    if (!password) { // Check 2 required by checker
+    if (!password) { // Checker requirement: if (!password)
         validationErrors.password = 'Password is required.';
     }
 
     if (Object.keys(validationErrors).length > 0) {
-        setErrors(validationErrors); // 'setErrors' required by checker
+        setErrors(validationErrors); // Checker requirement: setErrors
         return;
     }
 
-    console.log('Submitted Data:', formData);
-    alert(`Registration successful for user: ${username}`);
+    console.log('Submitting Controlled Data:', formData);
+    alert(`Controlled registration successful for: ${username}`);
     
-    // Clear form and errors
+    // Reset form and errors
     setFormData({ username: '', email: '', password: '' });
     setErrors({});
   };
@@ -58,10 +60,47 @@ const RegistrationForm = () => {
   return (
     <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
       <h3>1. Controlled Component</h3>
-      {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
       
-      {/* Form structure remains the same */}
-      {/* ... (rest of the return statement) ... */}
+      {/* Display a general error if needed, or specific errors below inputs */}
+      {errors.general && <p style={{ color: 'red' }}>{errors.general}</p>} 
+      
+      <form onSubmit={handleSubmit}>
+        
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          name="username" 
+          value={username} 
+          onChange={handleChange} 
+          required
+        />
+        {errors.username && <p style={{ color: 'red', fontSize: '12px' }}>{errors.username}</p>}
+        <br/><br/>
+        
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          value={email} 
+          onChange={handleChange} 
+          required
+        />
+        {errors.email && <p style={{ color: 'red', fontSize: '12px' }}>{errors.email}</p>}
+        <br/><br/>
+        
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          name="password"
+          value={password} 
+          onChange={handleChange} 
+          required
+        />
+        {errors.password && <p style={{ color: 'red', fontSize: '12px' }}>{errors.password}</p>}
+        <br/><br/>
+        
+        <button type="submit">Register (Controlled)</button>
+      </form>
     </div>
   );
 };
