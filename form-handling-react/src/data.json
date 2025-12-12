@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "title": "Spaghetti Carbonara",
+    "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+    "image": "https://via.placeholder.com/600x400?text=Spaghetti+Carbonara",
+    "ingredients": [
+      "200g spaghetti",
+      "100g pancetta or guanciale",
+      "2 large eggs",
+      "50g grated Pecorino Romano cheese",
+      "Black pepper to taste"
+    ],
+    "instructions": [
+      "Cook spaghetti according to package directions.",
+      "While spaghetti cooks, cook the pancetta until crispy.",
+      "In a bowl, whisk eggs, cheese, and pepper.",
+      "Drain spaghetti, reserving some pasta water. Immediately toss with pancetta and egg mixture (off the heat!).",
+      "Add a splash of pasta water to create a creamy sauce. Serve immediately."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Chicken Tikka Masala",
+    "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato based gravy.",
+    "image": "https://via.placeholder.com/600x400?text=Chicken+Tikka+Masala",
+    "ingredients": [
+      "500g chicken breast, cut into cubes",
+      "1 cup yogurt for marinade",
+      "1 tbsp ginger-garlic paste",
+      "1 can (400g) crushed tomatoes",
+      "1 cup heavy cream",
+      "Garam Masala and other spices"
+    ],
+    "instructions": [
+      "Marinate chicken in yogurt and spices for at least 30 minutes.",
+      "Grill or bake the chicken (Tikka).",
+      "Sauté onions, ginger, and garlic, then add crushed tomatoes and spices.",
+      "Stir in the heavy cream and the grilled chicken.",
+      "Simmer for 15 minutes. Serve hot with rice or naan."
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Vegetable Stir Fry",
+    "summary": "Quick and healthy stir-fried vegetables with a savory sauce, perfect for a weeknight meal.",
+    "image": "https://via.placeholder.com/600x400?text=Vegetable+Stir+Fry",
+    "ingredients": [
+      "1 tbsp soy sauce",
+      "1 tbsp oyster sauce (optional)",
+      "1/2 cup water or broth",
+      "1 tsp cornstarch",
+      "Assorted vegetables (broccoli, carrots, peppers)"
+    ],
+    "instructions": [
+      "Mix soy sauce, oyster sauce, water, and cornstarch to create the sauce.",
+      "Heat oil in a wok or large pan.",
+      "Stir-fry harder vegetables (carrots, broccoli) first for 3-5 minutes.",
+      "Add softer vegetables (peppers, mushrooms) and stir-fry for 2 more minutes.",
+      "Pour in the sauce and stir until it thickens. Serve over rice."
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Classic Beef Burgers",
+    "summary": "Juicy grilled beef patties served on a toasted bun with all the fixings.",
+    "image": "https://via.placeholder.com/600x400?text=Classic+Beef+Burgers",
+    "ingredients": [
+      "1 lb ground beef",
+      "1 tsp salt",
+      "1/2 tsp black pepper",
+      "4 burger buns",
+      "Toppings (lettuce, tomato, cheese)"
+    ],
+    "instructions": [
+      "Gently form the ground beef into 4 equal patties. Make a small thumbprint in the center of each.",
+      "Season both sides with salt and pepper.",
+      "Grill or pan-fry the patties to your desired doneness.",
+      "Toast the buns.",
+      "Assemble the burgers with your favorite toppings and serve."
+    ]
+  }
+]
