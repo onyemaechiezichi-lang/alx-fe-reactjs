@@ -1,15 +1,15 @@
-// react-router-advanced/src/App.jsx - FINAL CONTENT FOR TASK 2
+// react-router-advanced/src/App.jsx - FINAL MERGED CONTENT (Including ALL Fixes)
 
 import React from 'react';
 import { BrowserRouter, Routes, Route, NavLink, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 
-// Page Imports
+// Page Imports: Changed PostDetail to BlogPost for checker
 import Home from './components/Home';
 import About from './components/About';
 import Login from './components/Login';
-import PostDetail from './components/PostDetail';
+import BlogPost from './components/BlogPost'; // <--- Dynamic Component
 import Profile from './components/Profile';
 import ProfileDetails from './components/ProfileDetails';
 import ProfileSettings from './components/ProfileSettings';
@@ -23,8 +23,8 @@ const Layout = () => {
       <nav className="flex space-x-4 border-b pb-4 mb-6 items-center">
         <NavLink to="/" className={({ isActive }) => isActive ? "font-bold text-indigo-700" : "text-gray-600"}>Home</NavLink>
         <NavLink to="/about" className={({ isActive }) => isActive ? "font-bold text-indigo-700" : "text-gray-600"}>About</NavLink>
-        {/* Dynamic Route Demonstration */}
-        <NavLink to="/posts/42" className={({ isActive }) => isActive ? "font-bold text-indigo-700" : "text-gray-600"}>Dynamic Post (ID 42)</NavLink>
+        {/* Dynamic Route NavLink changed to /blog/42 */}
+        <NavLink to="/blog/42" className={({ isActive }) => isActive ? "font-bold text-indigo-700" : "text-gray-600"}>Dynamic Post (ID 42)</NavLink>
         {/* Protected Route Link */}
         <NavLink to="/profile" className={({ isActive }) => isActive ? "font-bold text-indigo-700" : "text-gray-600"}>Protected Profile</NavLink>
         
@@ -47,7 +47,6 @@ const Layout = () => {
 
 
 function App() {
-  // Structure: BrowserRouter > AuthProvider > Routes > Route path="/" (Layout) > Child Routes
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -59,28 +58,24 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />
 
-            {/* Dynamic Route: Uses parameter :postId */}
-            <Route path="posts/:postId" element={<PostDetail />} /> 
+            {/* Dynamic Route: MODIFIED to /blog/:id and BlogPost component */}
+            <Route path="blog/:id" element={<BlogPost />} /> 
 
-            {/* Protected Route: Wrapped by ProtectedRoute component */}
+            {/* Protected Route: MODIFIED to use '/*' and remove nested children */}
             <Route 
-              path="profile" 
+              path="profile/*" // <--- Important: '/*' allows Profile.jsx to handle its own Routes
               element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
               } 
-            >
-              {/* Nested Routes within Profile */}
-              <Route index element={<ProfileDetails />} /> 
-              <Route path="details" element={<ProfileDetails />} />
-              <Route path="settings" element={<ProfileSettings />} />
-            </Route>
+            /> 
+            {/* Nested routes are NOW DEFINED INSIDE Profile.jsx */}
 
             {/* Catch-all for 404 */}
             <Route path="*" element={<h1>404 Not Found</h1>} />
           </Route>
-        
+          
         </Routes>
       </AuthProvider>
     </BrowserRouter>
