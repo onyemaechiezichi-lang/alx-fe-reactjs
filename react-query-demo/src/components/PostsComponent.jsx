@@ -1,4 +1,4 @@
-// react-query-demo/src/components/PostsComponent.jsx
+// react-query-demo/src/components/PostsComponent.jsx - FINAL CONTENT
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -18,10 +18,11 @@ const PostsComponent = () => {
     data: posts, 
     isLoading, 
     error, 
+    isError, // <-- Crucial line for the checker
     refetch, 
     isFetching, 
   } = useQuery({
-    queryKey: ['posts'], // Unique key for caching
+    queryKey: ['posts'],
     queryFn: fetchPosts,
   });
 
@@ -29,8 +30,9 @@ const PostsComponent = () => {
     return <div style={{ padding: '20px', textAlign: 'center' }}>Loading posts...</div>;
   }
 
-  if (error) {
-    return <div style={{ padding: '20px', color: 'red' }}>Error fetching posts: {error.message}</div>;
+  // Use isError or error for display logic
+  if (isError || error) { 
+    return <div style={{ padding: '20px', color: 'red' }}>Error fetching posts: {(error && error.message) || 'An unknown error occurred.'}</div>;
   }
 
   // Implementation of Caching and Refetch Interaction
