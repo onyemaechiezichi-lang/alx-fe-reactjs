@@ -7,7 +7,6 @@ import ProfileDetails from './ProfileDetails';
 import ProfileSettings from './ProfileSettings'; 
 import { useAuth } from '../AuthContext';
 
-
 const Profile = () => {
   const { user } = useAuth();
   const location = useLocation();
