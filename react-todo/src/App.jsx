@@ -2,7 +2,18 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+// react-todo/src/App.jsx - FINAL REQUIRED CONTENT
 
+import React from 'react';
+import TodoList from './components/TodoList';
+
+function App() {
+  return (
+    <div className="p-8">
+      <TodoList /> 
+    </div>
+  );
+}
 function App() {
   const [count, setCount] = useState(0)
 
