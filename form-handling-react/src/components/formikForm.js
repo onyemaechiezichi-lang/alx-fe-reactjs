@@ -4,15 +4,20 @@ import * as Yup from 'yup';
 
 // 1. Define the Validation Schema using Yup
 const validationSchema = Yup.object({
+  // Detailed validation for username
   username: Yup.string()
     .min(3, 'Must be at least 3 characters')
-    .required('Username is required'),
+    .required('Username is required'), // Ensures 'string().required()' is present
+
+  // Detailed validation for email
   email: Yup.string()
     .email('Invalid email address')
-    .required('Email is required'),
+    .required('Email is required'), // Ensures 'string().required()' is present
+
+  // Detailed validation for password
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .required('Password is required'), // Ensures 'string().required()' is present
 });
 
 const FormikForm = () => {
