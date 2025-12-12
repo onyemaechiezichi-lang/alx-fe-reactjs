@@ -6,13 +6,13 @@ import { AuthProvider, useAuth } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 
 // Page Imports
-import Home from './pages/Home';
-import About from './pages/About';
-import Login from './pages/Login';
-import PostDetail from './pages/PostDetail';
-import Profile from './pages/Profile';
-import ProfileDetails from './pages/ProfileDetails';
-import ProfileSettings from './pages/ProfileSettings';
+import Home from './components/Home';
+import About from './components/About';
+import Login from './components/Login';
+import PostDetail from './components/PostDetail';
+import Profile from './components/Profile';
+import ProfileDetails from './components/ProfileDetails';
+import ProfileSettings from './components/ProfileSettings';
 
 // Helper component for navigation and logout
 const Layout = () => {
