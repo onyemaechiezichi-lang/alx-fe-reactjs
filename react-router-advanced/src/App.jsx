@@ -80,7 +80,7 @@ function App() {
             {/* Catch-all for 404 */}
             <Route path="*" element={<h1>404 Not Found</h1>} />
           </Route>
-          
+        
         </Routes>
       </AuthProvider>
     </BrowserRouter>
