@@ -1,17 +1,15 @@
 // react-todo/jest.config.js
-
 /** @type {import('jest').Config} */
 const config = {
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jsdom', // CRUCIAL for React Testing Library
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
-    // Use babel-jest for transforming JSX files
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest', // CRUCIAL for transforming JSX
   },
   moduleNameMapper: {
-    // Handle module aliases (if any are used in the project)
-    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    // Required to prevent CSS imports from breaking tests
+    "\\.(css|less|sass|scss)$": "identity-obj-proxy", 
   },
 };
 
